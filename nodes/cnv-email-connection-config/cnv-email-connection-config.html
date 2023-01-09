@@ -1,0 +1,69 @@
+<script type="text/javascript">
+    RED.nodes.registerType('cnv-email-connection-config', {
+        category: 'config',
+        defaults: {
+            name: { value: '', required: true },
+            provider: { value: 'sendgrid', required: true },
+            apikey: { value: '', required: true },
+            apisecret: { value: '', validate: (value) => $("#node-config-input-provider").val() !== 'mailjet' || value },
+        },
+        label: function () {
+            return this.name;
+        },
+        oneditprepare: function () {
+
+            $("#node-config-input-provider").typedInput({
+                types: [
+                    {
+                        value: "provider",
+                        options: [
+                            { value: "sendgrid", label: "SendGrid" },
+                            { value: "mailjet", label: "MailJet" },
+                        ]
+                    }
+                ]
+            });
+
+            $("#node-config-input-provider").on("change", function () {
+                switch (this.value) {
+                    case "mailjet":
+                        $("#apiSecretDiv").show();
+                        break;
+
+                    default:
+                        $("#apiSecretDiv").hide();
+                        break;
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="cnv-email-connection-config">
+
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-bookmark"></i>Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+
+    <br>
+    
+    <div class="form-row">
+        <label for="node-config-input-provider"><i class="fa fa-bookmark"></i>Provider</label>
+        <input type="text" id="node-config-input-provider">
+    </div>
+    
+    <br>
+    
+    <div class="form-row">
+        <label for="node-config-input-apikey"><i class="fa fa-bookmark"></i>API Key</label>
+        <input type="text" id="node-config-input-apikey">
+    </div>
+    
+    <br>
+
+    <div id="apiSecretDiv" class="form-row">
+        <label for="node-config-input-apisecret"><i class="fa fa-bookmark"></i>API Secret</label>
+        <input type="text" id="node-config-input-apisecret">
+    </div>
+</script>

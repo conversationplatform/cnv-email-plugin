@@ -1,0 +1,95 @@
+<script type="text/javascript">
+  RED.nodes.registerType("cnv-email-plugin", {
+    category: "conversation email",
+    color: "#a6ddff",
+    defaults: {
+      name: { value: "" },
+      delay: { value: 1 },
+      connection: { value: '', type: 'cnv-email-connection-config', required: true },
+      from: { value: '', required: true },
+      to: { value: '', required: true },
+      cc: { value: '', required: false },
+      subject: { value: '', required: true },
+      body: { value: '', required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "envelope.svg",
+    label: function () {
+      return `cnv-email-plugin\\n ${this.name || 'email'}`;
+    },
+    oneditprepare: function () {
+
+      var simplemde = new SimpleMDE({ element: document.getElementById("node-input-body"), forceSync: true });
+
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="cnv-email-plugin">
+  <h3>Node properties</h1>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Title</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+
+  <hr />
+
+  <h3>Data properties</h3>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-delay"><i class="fa fa-tag"></i> Delay</label>
+    <input type="number" id="node-input-delay" placeholder="Delay">
+  </div>
+  <br/>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-connection"><i class="fa fa-tag"></i> Connection</label>
+    <input type="cnv-email-connection-config" id="node-input-connection" placeholder="Connection">
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-from"><i class="fa fa-tag"></i> From</label>
+    <input type="text" id="node-input-from" placeholder="from">
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-to"><i class="fa fa-tag"></i> To</label>
+    <input type="text" id="node-input-to" placeholder="to">
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-cc"><i class="fa fa-tag"></i> CC</label>
+    <input type="text" id="node-input-cc" placeholder="cc">
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-subject"><i class="fa fa-tag"></i> Subject</label>
+    <input type="text" id="node-input-subject" placeholder="subject">
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-body"><i class="fa fa-tag"></i> Body</label>
+    <textarea type="text" id="node-input-body" placeholder="body"></textarea>
+  </div>
+
+
+</script>
+
+<script type="text/html" data-help-name="cnv-email-plugin">
+  <p>Node for sending email</p>
+</script>
