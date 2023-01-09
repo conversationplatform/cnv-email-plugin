@@ -1,4 +1,4 @@
-const { EmailProviders } = require("../../widgets/services/email-providers");
+const { EmailProviders } = require("../services/email-providers");
 
 module.exports = function (RED) {
     function EmailConnectionConfig(n) {
