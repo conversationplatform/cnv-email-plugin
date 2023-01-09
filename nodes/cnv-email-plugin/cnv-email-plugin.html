@@ -10,7 +10,7 @@
       to: { value: '', required: true },
       cc: { value: '', required: false },
       subject: { value: '', required: true },
-      body: { value: '', required: true },
+      bodyTemplate: { value: '', type: 'cnv-email-body-template-config', required: true },
     },
     inputs: 1,
     outputs: 1,
@@ -19,8 +19,6 @@
       return `cnv-email-plugin\\n ${this.name || 'email'}`;
     },
     oneditprepare: function () {
-
-      var simplemde = new SimpleMDE({ element: document.getElementById("node-input-body"), forceSync: true });
 
     },
   });
@@ -40,7 +38,7 @@
   <br/>
 
   <div class="form-row">
-    <label for="node-input-delay"><i class="fa fa-tag"></i> Delay</label>
+    <label for="node-input-delay"><i class="fa fa-tag"></i>Delay</label>
     <input type="number" id="node-input-delay" placeholder="Delay">
   </div>
   <br/>
@@ -48,45 +46,44 @@
   <br/>
 
   <div class="form-row">
-    <label for="node-input-connection"><i class="fa fa-tag"></i> Connection</label>
+    <label for="node-input-connection"><i class="fa fa-tag"></i>Connection</label>
     <input type="cnv-email-connection-config" id="node-input-connection" placeholder="Connection">
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-from"><i class="fa fa-tag"></i> From</label>
+    <label for="node-input-from"><i class="fa fa-tag"></i>From</label>
     <input type="text" id="node-input-from" placeholder="from">
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-to"><i class="fa fa-tag"></i> To</label>
+    <label for="node-input-to"><i class="fa fa-tag"></i>To</label>
     <input type="text" id="node-input-to" placeholder="to">
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-cc"><i class="fa fa-tag"></i> CC</label>
+    <label for="node-input-cc"><i class="fa fa-tag"></i>CC</label>
     <input type="text" id="node-input-cc" placeholder="cc">
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-subject"><i class="fa fa-tag"></i> Subject</label>
+    <label for="node-input-subject"><i class="fa fa-tag"></i>Subject</label>
     <input type="text" id="node-input-subject" placeholder="subject">
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-body"><i class="fa fa-tag"></i> Body</label>
-    <textarea type="text" id="node-input-body" placeholder="body"></textarea>
+    <label for="node-input-bodyTemplate"><i class="fa fa-tag"></i>Body</label>
+    <input type="cnv-email-body-template-config" id="node-input-bodyTemplate" placeholder="Body">
   </div>
-
 
 </script>
 

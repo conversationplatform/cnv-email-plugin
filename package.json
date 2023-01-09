@@ -28,6 +28,7 @@
   },
   "node-red": {
     "nodes": {
+      "cnv-email-body-template-config": "nodes/cnv-email-body-template-config/cnv-email-body-template-config.js",
       "cnv-email-connection-config": "nodes/cnv-email-connection-config/cnv-email-connection-config.js",
       "cnv-email-plugin": "nodes/cnv-email-plugin/cnv-email-plugin.js"
     }

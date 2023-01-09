@@ -23,8 +23,6 @@ const mapFolder = (folder) => {
 
 mapFolder('nodes');
 
-
-
 packageJson["node-red"] = { nodes };
 
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
