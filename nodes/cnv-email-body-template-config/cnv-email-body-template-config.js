@@ -1,4 +1,3 @@
-const { EmailProviders } = require("../services/email-providers");
 
 module.exports = function (RED) {
     function EmailBodyTemplateConfig(n) {

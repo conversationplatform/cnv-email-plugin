@@ -23,19 +23,14 @@ const EmailProviders = {
             console.log('sending email via mailjet with config:', config)
 
             const mailjet = Mailjet.apiConnect(apiKey, apiSecret);
-            const request = mailjet
-                .post("send", { 'version': 'v3.1' })
-                .request({
-                    "Messages": [
-                        {
-                            "From": { "Email": config.from },
-                            "To": [{ "Email": config.to }],
-                            "Cc": [{ "Email": config.cc }],
-                            "Subject": config.subject,
-                            "HTMLPart": config.body,
-                        }
-                    ]
-                });
+            const message = {
+                "From": { "Email": config.from },
+                "To": [{ "Email": config.to }],
+                "Cc": [{ "Email": config.cc }],
+                "Subject": config.subject,
+                "HTMLPart": config.body,
+            };
+            const request = mailjet.post("send", { 'version': 'v3.1' }).request({ "Messages": [message] });
 
             request.then((result) => {
                 console.log(result)
