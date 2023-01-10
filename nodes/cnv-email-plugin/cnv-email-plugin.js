@@ -5,7 +5,7 @@ module.exports = function (RED) {
   function EmailPlugin(config) {
     RED.nodes.createNode(this, config);
 
-    const { from, to, cc, subject } = config;
+    const { from, to, cc, bcc, subject } = config;
     const connection = RED.nodes.getNode(config.connection);
     const body = RED.nodes.getNode(config.bodyTemplate).body;
 
@@ -14,7 +14,7 @@ module.exports = function (RED) {
       const variablesChecked = checkForVariables(body, msg);
       const result = markdown.render(variablesChecked);
 
-      const emailParams = { from, to, cc, subject, body: result };
+      const emailParams = { from, to, cc, bcc, subject, body: result };
       console.log('EmailPlugin On input:', emailParams);
 
       connection.sendEmail(emailParams);

@@ -7,8 +7,9 @@
       delay: { value: 1 },
       connection: { value: '', type: 'cnv-email-connection-config', required: true },
       from: { value: '', required: true },
-      to: { value: '', required: true },
-      cc: { value: '', required: false },
+      to: { value: [''], validate: (value) => value.length > 0 },
+      cc: { value: [] },
+      bcc: { value: [] },
       subject: { value: '', required: true },
       bodyTemplate: { value: '', type: 'cnv-email-body-template-config', required: true },
     },
@@ -19,7 +20,33 @@
       return `cnv-email-plugin\\n ${this.name || 'email'}`;
     },
     oneditprepare: function () {
+      const createEditableListFor = (property) => {
+        const id = `#node-input-${property}-container`;
+        $(id).editableList({
+          removable: true,
+          addItem: function (row, index, data) {
+            $(row).html(`<input type="text" style="width:90%" placeholder="${property}" ${$.isEmptyObject(data) ? '' : 'value="' + data + '"'}>`);
+          }
+        });
 
+        for (let i = 0; i < this[property].length; i++) {
+          $(id).editableList("addItem", this[property][i]);
+        }
+      };
+
+      createEditableListFor('to');
+      createEditableListFor('cc');
+      createEditableListFor('bcc');
+    },
+    oneditsave: function () {
+      const onSaveEditableListFor = (property) => {
+        const values = $(`#node-input-${property}-container`).editableList('items');
+        this[property] = values.toArray().map(v => v.find('input').val());
+      };
+
+      onSaveEditableListFor('to');
+      onSaveEditableListFor('cc');
+      onSaveEditableListFor('bcc');
     },
   });
 </script>
@@ -59,16 +86,23 @@
 
   <br/>
 
-  <div class="form-row">
-    <label for="node-input-to"><i class="fa fa-tag"></i>To</label>
-    <input type="text" id="node-input-to" placeholder="to">
+  <div class="form-row node-input-to-container-row">
+    <label for="node-input-to-container"><i class="fa fa-tag"></i>To</label>
+    <ol id="node-input-to-container"></ol>
   </div>
 
   <br/>
 
   <div class="form-row">
-    <label for="node-input-cc"><i class="fa fa-tag"></i>CC</label>
-    <input type="text" id="node-input-cc" placeholder="cc">
+    <label for="node-input-cc-container"><i class="fa fa-tag"></i>CC</label>
+    <ol id="node-input-cc-container"></ol>
+  </div>
+
+  <br/>
+
+  <div class="form-row">
+    <label for="node-input-bcc-container"><i class="fa fa-tag"></i>BCC</label>
+    <ol id="node-input-bcc-container"></ol>
   </div>
 
   <br/>
@@ -81,7 +115,7 @@
   <br/>
 
   <div class="form-row">
-    <label for="node-input-bodyTemplate"><i class="fa fa-tag"></i>Body</label>
+    <label for="node-input-bodyTemplate"><i class="fa fa-tag"></i>Body Template</label>
     <input type="cnv-email-body-template-config" id="node-input-bodyTemplate" placeholder="Body">
   </div>
 
