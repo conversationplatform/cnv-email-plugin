@@ -47,7 +47,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: *.tgz
+          artifacts: '*.tgz'
           commit: add-github-actions
           tag: v0.0.0-test5
           generateReleaseNotes: true
