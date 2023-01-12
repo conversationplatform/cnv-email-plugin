@@ -35,7 +35,6 @@ jobs:
         run: |-
           yarn
           yarn build
-          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
 
       - name: Test
         run: yarn test
@@ -44,7 +43,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: cnv-plataform-cnv-email-plugin*.tgz
-          commit: $GITHUB_REF_NAME
+          commit: add-github-actions
           tag: v0.0.0-test2
           generateReleaseNotes: true
 
