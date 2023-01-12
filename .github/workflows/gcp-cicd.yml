@@ -43,6 +43,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: cnv-plataform-cnv-email-plugin*.tgz
+          commit: $GITHUB_REF_NAME
+          tag: v0.0.0-test2
           generateReleaseNotes: true
 
       # - name: Semantic Release
