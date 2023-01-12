@@ -29,12 +29,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build
         run: |-
           yarn
           yarn build
+          echo GITHUB_REF_NAME: $GITHUB_REF_NAME
 
       - name: Test
         run: yarn test
