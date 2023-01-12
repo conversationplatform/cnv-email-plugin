@@ -1,0 +1,144 @@
+name: Release and Upload
+
+on:
+  push:
+    # tags:
+    #   - 'v*'
+    branches:
+      - add-github-actions
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  DEPLOYMENT_NAME: cnv-email-plugin
+  IMAGE: cnv-email-plugin
+  REGISTRY: europe-west3-docker.pkg.dev
+  NAMESPACE: cnv-email-plugin
+
+  ARANGO_ROOT_PASSWORD: ${{ secrets.ARANGO_ROOT_PASSWORD }}
+  ARANGO_HOST: ${{ secrets.ARANGO_HOST }}
+  ARANGO_USER: ${{ secrets.ARANGO_USER }}
+  ARANGO_PASSWORD: ${{ secrets.ARANGO_PASSWORD }}
+  ARANGO_DATABASE: ${{ secrets.ARANGO_DATABASE }}
+  ADMIN_USER: ${{ secrets.ADMIN_USER }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: cnv-plataform-cnv-email-plugin*.tgz
+          generateReleaseNotes: true
+
+      # - name: Semantic Release
+      #   id: semantic_release
+      #   uses: semantic-release/github-action@v3
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v3
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.semantic_release.outputs.tag_name }}
+      #     release_name: Release ${{ steps.semantic_release.outputs.tag_name }}
+      #     draft: false
+      #     prerelease: false
+
+      # - name: Upload Release Asset
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: path/to/your.zip
+      #     asset_name: your.zip
+      #     asset_content_type: application/zip
+
+      # - name: Git user config
+      #   run: |-
+      #     git config --global user.email "tinybuilder@productdock.com"
+      #     git config --global user.name "TinyBuilder"
+
+      # # Setup gcloud CLI
+      # - uses: google-github-actions/setup-gcloud@v0.2.0
+      #   with:
+      #     service_account_key: ${{ secrets.GKE_SA_KEY }}
+      #     project_id: ${{ secrets.GKE_PROJECT }}
+
+      # - run: |-
+      #     gcloud auth configure-docker \
+      #       europe-west3-docker.pkg.dev
+
+      # - name: update package version
+      #   run: |-
+      #     yarn update:package $GITHUB_REF_NAME
+      #     yarn update:package:app $GITHUB_REF_NAME
+      #     yarn update:package:dashboard $GITHUB_REF_NAME
+      #     yarn update:package:middleware $GITHUB_REF_NAME
+      #     yarn update:package:plugins:core $GITHUB_REF_NAME
+      #     yarn update:package:plugins:essentials $GITHUB_REF_NAME
+      #if: startsWith(github.event.ref, 'refs/tags/')
+
+      # #Build
+      # - name: Build cnv-platform docker
+      #   run: |-
+      #     docker build \
+      #       --tag "$REGISTRY/$PROJECT_ID/$NAMESPACE-container/$IMAGE:$GITHUB_REF_NAME" \
+      #       --build-arg GITHUB_SHA="$GITHUB_SHA" \
+      #       --build-arg GITHUB_REF="$GITHUB_REF" \
+      #       -f docker/Dockerfile .
+
+  #     # Push the Docker image to Google Container Registry
+  #     - name: Publish
+  #       run: |-
+  #         docker push "$REGISTRY/$PROJECT_ID/$NAMESPACE-container/$IMAGE:$GITHUB_REF_NAME"
+
+  #     # update git repo
+  #     - name: git push changes
+  #       run: |-
+  #         git push -u origin HEAD:main
+
+  # deploy:
+  #   name: Deploy into development
+  #   runs-on: cnv-platform
+  #   environment: production
+  #   needs: build-and-publish
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+
+  #     # Deploy arangodb
+  #     - name: ArangoDB Build manifests and deploy
+  #       run: |-
+  #         cd manifests/common/arango
+  #         cat secret.yml.tpl | envsubst > secret.yml
+  #         kubectl -n $NAMESPACE apply -k .
+  #         kubectl -n $NAMESPACE rollout status deployment/arango
+
+  #     # Deploy cnv-platform
+  #     - name: cnv-platform Build manifests and deploy
+  #       run: |-
+  #         #kubectl -n $NAMESPACE scale deployment $DEPLOYMENT_NAME --replicas=0 && sleep 30s
+  #         cd manifests/development/
+  #         cat secret.yml.tpl | envsubst > secret.yml
+  #         kustomize edit set image IMAGE:TAG=$REGISTRY/$PROJECT_ID/$NAMESPACE-container/$IMAGE:$GITHUB_REF_NAME
+  #         kubectl -n $NAMESPACE apply -k .
+  #         kubectl -n $NAMESPACE rollout status deployment/$DEPLOYMENT_NAME
