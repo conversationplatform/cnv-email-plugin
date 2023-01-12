@@ -44,7 +44,7 @@ jobs:
         with:
           artifacts: cnv-plataform-cnv-email-plugin*
           commit: add-github-actions
-          tag: v0.0.0-test2
+          tag: v0.0.0-test3
           generateReleaseNotes: true
 
       # - name: Semantic Release
