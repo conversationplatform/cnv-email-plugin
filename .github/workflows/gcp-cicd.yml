@@ -29,22 +29,12 @@ jobs:
         uses: hennejg/github-tag-action@v4.3.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # dry_run: true
           release_branches: add-github-actions
-
-      # - name: Output tag action
-      #   run: |-
-      #     echo ${{ steps.create-tag.outputs.new_tag }}
-      #     echo ${{ steps.create-tag.outputs.new_version }}
-      #     echo ${{ steps.create-tag.outputs.previous-_tag }}
-      #     echo ${{ steps.create-tag.outputs.changelog }}
 
       - name: Update package.json version
         run: |-
           git config --global user.email "tinybuilder@productdock.com"
           git config --global user.name "TinyBuilder"
-          git status
-          git diff
           npm version ${{ steps.create-tag.outputs.new_version }} --allow-same-version
 
       - name: Update Changelog
@@ -56,9 +46,7 @@ jobs:
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          # branch: add-github-actions
           commit_message: Update version and CHANGELOG
-          # file_pattern: CHANGELOG.md
 
       - name: Pack
         run: yarn pack
