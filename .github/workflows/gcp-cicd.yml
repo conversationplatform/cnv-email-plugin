@@ -54,11 +54,11 @@ jobs:
         with:
           artifacts: '*.tgz'
           commit: add-github-actions
-          tag: v0.0.1
+          tag: ${{ steps.create-tag.outputs.new_tag }}
           generateReleaseNotes: true
 
       - name: Update package.json version
-        run: npm version v0.0.1
+        run: npm version ${{ steps.create-tag.outputs.new_version }}
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
