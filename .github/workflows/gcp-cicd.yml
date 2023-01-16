@@ -40,13 +40,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
+          release_branches: add-github-actions
 
       - name: Output tag action
         run: |-
-          echo ${{ steps.create-tag.new_tag }}
-          echo ${{ steps.create-tag.new_version }}
-          echo ${{ steps.create-tag.previous-_tag }}
-          echo ${{ steps.create-tag.changelog }}
+          echo ${{ steps.create-tag.outputs.new_tag }}
+          echo ${{ steps.create-tag.outputs.new_version }}
+          echo ${{ steps.create-tag.outputs.previous-_tag }}
+          echo ${{ steps.create-tag.outputs.changelog }}
 
       # - name: Create Release
       #   uses: ncipollo/release-action@v1
