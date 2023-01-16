@@ -39,7 +39,7 @@ jobs:
         uses: hennejg/github-tag-action@v4.3.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: true
+          # dry_run: true
           release_branches: add-github-actions
 
       - name: Output tag action
@@ -49,10 +49,26 @@ jobs:
           echo ${{ steps.create-tag.outputs.previous-_tag }}
           echo ${{ steps.create-tag.outputs.changelog }}
 
-      # - name: Create Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: '*.tgz'
-      #     commit: add-github-actions
-      #     tag: v0.0.0-test5
-      #     generateReleaseNotes: true
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: '*.tgz'
+          commit: add-github-actions
+          tag: ${{ steps.create-tag.outputs.new_tag }}
+          generateReleaseNotes: true
+
+      - name: Update package.json version
+        run: npm version ${{ steps.create-tag.outputs.new_version }}
+
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          latest-version: ${{ steps.create-tag.outputs.new_version }}
+          release-notes: ${{ steps.create-tag.outputs.changelog }}
+
+      - name: Commit updated CHANGELOG
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: add-github-actions
+          commit_message: Update CHANGELOG
+          file_pattern: CHANGELOG.md
