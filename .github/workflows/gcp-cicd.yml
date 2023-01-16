@@ -61,7 +61,7 @@ jobs:
         run: |-
           git config --global user.email "tinybuilder@productdock.com"
           git config --global user.name "TinyBuilder"
-          npm version ${{ steps.create-tag.outputs.new_version }}
+          npm version ${{ steps.create-tag.outputs.new_version }} allow-same-version
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
