@@ -58,7 +58,7 @@ jobs:
           generateReleaseNotes: true
 
       - name: Update package.json version
-        run: npm version ${{ steps.create-tag.outputs.new_version }}
+        run: npm version v0.0.1
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
