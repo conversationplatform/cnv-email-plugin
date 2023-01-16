@@ -75,3 +75,4 @@ jobs:
           commit: add-github-actions
           tag: ${{ steps.create-tag.outputs.new_tag }}
           generateReleaseNotes: true
+          body: ${{ steps.create-tag.outputs.changelog }}
