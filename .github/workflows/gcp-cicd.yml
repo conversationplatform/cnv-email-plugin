@@ -7,13 +7,6 @@ on:
     branches:
       - add-github-actions
 
-env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  DEPLOYMENT_NAME: cnv-email-plugin
-  IMAGE: cnv-email-plugin
-  REGISTRY: europe-west3-docker.pkg.dev
-  NAMESPACE: cnv-email-plugin
-
 jobs:
   build-release:
     runs-on: ubuntu-latest
@@ -50,6 +43,7 @@ jobs:
         run: |-
           git config --global user.email "tinybuilder@productdock.com"
           git config --global user.name "TinyBuilder"
+          git status
           npm version ${{ steps.create-tag.outputs.new_version }} --allow-same-version
 
       - name: Update Changelog
