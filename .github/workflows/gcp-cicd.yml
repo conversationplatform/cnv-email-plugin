@@ -2,10 +2,8 @@ name: Release and Upload
 
 on:
   push:
-    # tags:
-    #   - 'v*'
     branches:
-      - add-github-actions
+      - master
 
 jobs:
   build-release:
@@ -29,7 +27,7 @@ jobs:
         uses: hennejg/github-tag-action@v4.3.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: add-github-actions
+          release_branches: master
 
       - name: Update package.json version
         run: |-
@@ -55,7 +53,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: '*.tgz'
-          commit: add-github-actions
+          commit: master
           tag: ${{ steps.create-tag.outputs.new_tag }}
           generateReleaseNotes: true
           body: ${{ steps.create-tag.outputs.changelog }}
