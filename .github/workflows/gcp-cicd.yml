@@ -1,0 +1,59 @@
+name: Release and Upload
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: |-
+          yarn
+          yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Create Tag
+        id: create-tag
+        uses: hennejg/github-tag-action@v4.3.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: master
+
+      - name: Update package.json version
+        run: |-
+          git config --global user.email "tinybuilder@productdock.com"
+          git config --global user.name "TinyBuilder"
+          npm version ${{ steps.create-tag.outputs.new_version }} --allow-same-version
+
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          latest-version: ${{ steps.create-tag.outputs.new_version }}
+          release-notes: ${{ steps.create-tag.outputs.changelog }}
+
+      - name: Commit updated CHANGELOG
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update version and CHANGELOG
+
+      - name: Pack
+        run: yarn pack
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: '*.tgz'
+          commit: master
+          tag: ${{ steps.create-tag.outputs.new_tag }}
+          generateReleaseNotes: true
+          body: ${{ steps.create-tag.outputs.changelog }}
