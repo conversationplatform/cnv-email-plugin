@@ -29,13 +29,13 @@ jobs:
           mkdir tmp
           yarn release --dry-run > tmp/RELEASE-OUTPUT
           sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d' > tmp/CHANGELOG_CHANGES
-          # grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4 > tmp/TAG_RELEASE
-
-          # echo "CHANGELOG_CHANGES=$(sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d')" >> $GITHUB_ENV
           echo "TAG_RELEASE=$(grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4)" >> $GITHUB_ENV
+
+          # grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4 > tmp/TAG_RELEASE
+          # echo "CHANGELOG_CHANGES=$(sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d')" >> $GITHUB_ENV
           # git describe --abbrev=0
 
-          # yarn release
+          yarn release
 
       - name: trying
         run: |-
@@ -45,7 +45,7 @@ jobs:
           cat tmp/CHANGELOG_CHANGES
           echo TAG_RELEASE
           # cat tmp/TAG_RELEASE
-          ${{ env.TAG_RELEASE }}
+          echo ${{ env.TAG_RELEASE }}
 
       # - name: Create Tag
       #   id: create-tag
@@ -71,15 +71,15 @@ jobs:
       #   with:
       #     commit_message: Update version and CHANGELOG
 
-      # - name: Pack
-      #   run: yarn pack
+      - name: Pack
+        run: yarn pack
 
-      # - name: Create Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: '*.tgz'
-      #     commit: master
-      #     tag: ${{ steps.create-tag.outputs.new_tag }}
-      #     generateReleaseNotes: true
-      #     # body: ${{ steps.create-tag.outputs.changelog }}
-      #     bodyFile: tmp/CHANGELOG_CHANGES
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: '*.tgz'
+          commit: use-standard-version
+          tag: ${{ env.TAG_RELEASE }}
+          generateReleaseNotes: true
+          # body: ${{ steps.create-tag.outputs.changelog }}
+          bodyFile: tmp/CHANGELOG_CHANGES
