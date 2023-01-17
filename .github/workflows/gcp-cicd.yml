@@ -36,6 +36,8 @@ jobs:
 
       - name: trying
         run: |-
+          echo RELEASE-OUTPUT
+          cat tmp/RELEASE-OUTPUT
           echo CHANGELOG_CHANGES
           cat tmp/CHANGELOG_CHANGES
           echo TAG_RELEASE
