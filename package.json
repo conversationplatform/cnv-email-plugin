@@ -10,7 +10,6 @@
   },
   "author": "",
   "devDependencies": {
-    "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "axios": "^0.21.1",
     "eslint": "^6.8.0",
