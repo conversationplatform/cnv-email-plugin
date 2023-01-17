@@ -26,11 +26,10 @@ jobs:
         run: |-
           yarn release --dry-run > release-output
           # git describe --abbrev=0
+          echo "{CHANGELOG_CHANGES}={sed -n '/^---/,/^---/p' release-output | sed '/^---$/d'}" >> $GITHUB_ENV
+          echo "{TAG_RELEASE}={grep -w 'tagging release' release-output | cut -d' ' -f4}" >> $GITHUB_ENV
 
       - name: trying
-        env:
-          CHANGELOG_CHANGES: ${{ sed -n '/^---/,/^---/p' release-output | sed '/^---$/d' }}
-          TAG_RELEASE: ${{ grep -w 'tagging release' release-output | cut -d' ' -f4 }}
         run: |-
           echo CHANGELOG_CHANGES: $CHANGELOG_CHANGES
           echo TAG_RELEASE: $TAG_RELEASE
