@@ -24,7 +24,7 @@ jobs:
       - name: Test
         run: yarn test
 
-      - name: standard-version
+      - name: standard-version dry run
         run: |-
           mkdir tmp
           yarn release --dry-run > tmp/RELEASE-OUTPUT
@@ -35,9 +35,13 @@ jobs:
           # echo "CHANGELOG_CHANGES=$(sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d')" >> $GITHUB_ENV
           # git describe --abbrev=0
 
+      - name: standard-version the real deal
+        run: |-
+          git config --global user.email "tinybuilder@productdock.com"
+          git config --global user.name "TinyBuilder"
           yarn release
 
-      - name: trying
+      - name: debug
         run: |-
           echo RELEASE-OUTPUT
           cat tmp/RELEASE-OUTPUT
