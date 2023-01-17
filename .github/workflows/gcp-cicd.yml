@@ -24,6 +24,8 @@ jobs:
 
       - name: standard-version
         run: |-
+          git log
+          git status
           mkdir tmp
           yarn release --dry-run > tmp/RELEASE-OUTPUT
           sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d' > tmp/CHANGELOG_CHANGES

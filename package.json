@@ -1,6 +1,6 @@
 {
   "name": "@cnv-platform/cnv-email-plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "OpenSource TinyMe email plugin",
   "repository": "VisualVest-GmbH/cnv-email-plugin",
   "scripts": {
