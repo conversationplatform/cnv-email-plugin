@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build.js",
     "lint": "yarn run eslint nodes/",
-    "test": "jest"
+    "test": "jest",
+    "preinstall": "scripts/install-hooks"
   },
   "author": "",
   "devDependencies": {
