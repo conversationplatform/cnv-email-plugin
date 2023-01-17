@@ -40,40 +40,7 @@ jobs:
           git config --global user.email "tinybuilder@productdock.com"
           git config --global user.name "TinyBuilder"
           yarn release
-
-      - name: debug
-        run: |-
-          echo RELEASE-OUTPUT
-          cat tmp/RELEASE-OUTPUT
-          echo CHANGELOG_CHANGES
-          cat tmp/CHANGELOG_CHANGES
-          echo TAG_RELEASE
-          # cat tmp/TAG_RELEASE
-          echo ${{ env.TAG_RELEASE }}
-
-      # - name: Create Tag
-      #   id: create-tag
-      #   uses: hennejg/github-tag-action@v4.3.1
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     release_branches: master
-
-      # - name: Update package.json version
-      #   run: |-
-      #     git config --global user.email "tinybuilder@productdock.com"
-      #     git config --global user.name "TinyBuilder"
-      #     npm version ${{ steps.create-tag.outputs.new_version }} --allow-same-version
-
-      # - name: Update Changelog
-      #   uses: stefanzweifel/changelog-updater-action@v1
-      #   with:
-      #     latest-version: ${{ steps.create-tag.outputs.new_version }}
-      #     release-notes: ${{ steps.create-tag.outputs.changelog }}
-
-      # - name: Commit updated CHANGELOG
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: Update version and CHANGELOG
+          git push --follow-tags
 
       - name: Pack
         run: yarn pack
@@ -85,5 +52,4 @@ jobs:
           commit: use-standard-version
           tag: ${{ env.TAG_RELEASE }}
           generateReleaseNotes: true
-          # body: ${{ steps.create-tag.outputs.changelog }}
           bodyFile: tmp/CHANGELOG_CHANGES
