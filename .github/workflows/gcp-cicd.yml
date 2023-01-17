@@ -24,15 +24,20 @@ jobs:
 
       - name: standard-version
         run: |-
-          yarn release --dry-run > release-output
+          mkdir tmp
+          yarn release --dry-run > tmp/RELEASE-OUTPUT
+          sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d' > tmp/CHANGELOG_CHANGES
+          grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4 > tmp/TAG_RELEASE
+
+          # echo "CHANGELOG_CHANGES=$(sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d')" >> $GITHUB_ENV
+          # echo "TAG_RELEASE=$(grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4)" >> $GITHUB_ENV
+
           # git describe --abbrev=0
-          echo "CHANGELOG_CHANGES=$(sed -n '/^---/,/^---/p' release-output | sed '/^---$/d')" >> $GITHUB_ENV
-          echo "TAG_RELEASE=$(grep -w 'tagging release' release-output | cut -d' ' -f4)" >> $GITHUB_ENV
 
       - name: trying
         run: |-
-          echo CHANGELOG_CHANGES: ${{ env.CHANGELOG_CHANGES }}
-          echo TAG_RELEASE: ${{ env.TAG_RELEASE }}
+          echo CHANGELOG_CHANGES: ${{ cat tmp/CHANGELOG_CHANGES }}
+          echo TAG_RELEASE: ${{ cat tmp/TAG_RELEASE }}
 
       # - name: Create Tag
       #   id: create-tag
