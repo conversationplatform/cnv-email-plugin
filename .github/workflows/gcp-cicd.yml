@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Build
         run: |-
@@ -22,29 +24,19 @@ jobs:
       - name: Test
         run: yarn test
 
-      - name: Create Tag
-        id: create-tag
-        uses: hennejg/github-tag-action@v4.3.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: master
+      - name: standard-version dry run
+        run: |-
+          mkdir tmp
+          yarn release --dry-run > tmp/RELEASE-OUTPUT
+          sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d' > tmp/CHANGELOG_CHANGES
+          echo "TAG_RELEASE=$(grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4)" >> $GITHUB_ENV
 
-      - name: Update package.json version
+      - name: standard-version the real deal
         run: |-
           git config --global user.email "tinybuilder@productdock.com"
           git config --global user.name "TinyBuilder"
-          npm version ${{ steps.create-tag.outputs.new_version }} --allow-same-version
-
-      - name: Update Changelog
-        uses: stefanzweifel/changelog-updater-action@v1
-        with:
-          latest-version: ${{ steps.create-tag.outputs.new_version }}
-          release-notes: ${{ steps.create-tag.outputs.changelog }}
-
-      - name: Commit updated CHANGELOG
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update version and CHANGELOG
+          yarn release
+          git push --follow-tags
 
       - name: Pack
         run: yarn pack
@@ -54,6 +46,6 @@ jobs:
         with:
           artifacts: '*.tgz'
           commit: master
-          tag: ${{ steps.create-tag.outputs.new_tag }}
+          tag: ${{ env.TAG_RELEASE }}
           generateReleaseNotes: true
-          body: ${{ steps.create-tag.outputs.changelog }}
+          bodyFile: tmp/CHANGELOG_CHANGES
