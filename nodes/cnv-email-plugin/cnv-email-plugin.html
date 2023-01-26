@@ -123,4 +123,14 @@
 
 <script type="text/html" data-help-name="cnv-email-plugin">
   <p>Node for sending email</p>
+
+  <h3>Details</h3>
+  <p>You can create different connections for different possible configurations.</p>
+  <p>For each configuration you can choose between sendgrid and mailjet as a provider. You need to create a correspondent account beforehand</p>
+  <br>
+  <p>More than one recepient can be defined, for each 'To', 'Cc' and 'Bcc' you have a list and can input any number of emails, but only the 'To' needs to have at least one email.</p>
+  <p>Also, variables can be used to interpolate the emails, i.e. if you have the emails you want stored in the <code>msg</code> object you can input at any list element <code>${msg.variableName}</code>, e.g. <code>${msg.store.emailProvider.to}</code></p>
+  <p>Remark: You can omit the <code>msg</code> part if you want, e.g. <code>${store.emailProvider.to}</code>, internally it will only fetch variables in the <code>msg</code> object anyway</p>
+  <br>
+  <p>There is no option to input a specific body, you always have to pick or create a new body template. In the body template editor you can use markdown and variables like in the recipients inputs</p>
 </script>
