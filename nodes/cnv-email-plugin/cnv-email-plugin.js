@@ -10,12 +10,13 @@ module.exports = function (RED) {
     const body = RED.nodes.getNode(config.bodyTemplate).body;
 
     this.on("input", function (msg, send, done) {
+      const toWithVariables = to.map(t => checkForVariables(t, msg));
+      const ccWithVariables = cc.map(c => checkForVariables(c, msg));
+      const bccWithVariables = bcc.map(b => checkForVariables(b, msg));
+      const bodyWithVariables = checkForVariables(body, msg);
+      const bodyRendered = markdown.render(bodyWithVariables);
 
-      const variablesChecked = checkForVariables(body, msg);
-      const result = markdown.render(variablesChecked);
-
-      const emailParams = { from, to, cc, bcc, subject, body: result };
-      console.log('EmailPlugin On input:', emailParams);
+      const emailParams = { from, to: toWithVariables, cc: ccWithVariables, bcc: bccWithVariables, subject, body: bodyRendered };
 
       connection.sendEmail(emailParams);
 
