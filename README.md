@@ -1,1 +1,1 @@
-# cnv-plugins-template
+# cnv-email-plugin

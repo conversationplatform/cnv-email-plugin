@@ -1,0 +1,51 @@
+name: Release and Upload
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        run: |-
+          yarn
+          yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: standard-version dry run
+        run: |-
+          mkdir tmp
+          yarn release --dry-run > tmp/RELEASE-OUTPUT
+          sed -n '/^---/,/^---/p' tmp/RELEASE-OUTPUT | sed '/^---$/d' > tmp/CHANGELOG_CHANGES
+          echo "TAG_RELEASE=$(grep -w 'tagging release' tmp/RELEASE-OUTPUT | cut -d' ' -f4)" >> $GITHUB_ENV
+
+      - name: standard-version the real deal
+        run: |-
+          git config --global user.email "tinybuilder@productdock.com"
+          git config --global user.name "TinyBuilder"
+          yarn release
+          git push --follow-tags
+
+      - name: Pack
+        run: yarn pack
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: '*.tgz'
+          commit: master
+          tag: ${{ env.TAG_RELEASE }}
+          generateReleaseNotes: true
+          bodyFile: tmp/CHANGELOG_CHANGES
