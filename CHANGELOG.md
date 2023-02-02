@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/VisualVest-GmbH/cnv-email-plugin/compare/v0.0.0...v2.0.0) (2023-02-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* not really, just trying
+
+* chore: removes unused dependency
+
+* chore: trying new automation approach
+
+* chore: keep on trying
+
+* fix: keep on trying baby
+
+* chore: another try approach
+
+* fix: last try approach
+
+* chore: adds tmp dir to .gitignore
+
+* fix: debug release output
+
+* chore: trying to undestand the difference between github and local
+
+* fix: now gets entire history
+
+consequently generates the correct changelog and version
+
+* chore: now trying passing the values
+
+* chore: adds everything now
+
+* fix: pipeline issue
+
+* chore(release): 0.1.6
+
+* fix: push release changes
+
+package.json and CHANGELOG.md where commited locally and not pushed
+
+* chore(release): 0.1.7
+
+* chore: update pipeline to use final "master" branch
+
+Co-authored-by: TinyBuilder <tinybuilder@productdock.com>
+
+* feat: adds the option to input variables for the recipients
+
+* docs: adds description about the node
+
+* Email-Autoreply POC (#3) ([631039f](https://github.com/VisualVest-GmbH/cnv-email-plugin/commit/631039f1a7f29708fd02ae47aa91b7656b88211d)), closes [#3](https://github.com/VisualVest-GmbH/cnv-email-plugin/issues/3) [#2](https://github.com/VisualVest-GmbH/cnv-email-plugin/issues/2)
+
 ## [1.0.0](https://github.com/VisualVest-GmbH/cnv-email-plugin/compare/v0.0.0...v1.0.0) (2023-02-02)
 
 
