@@ -54,7 +54,7 @@ jobs:
     name: Sync dev with release version
     runs-on: ubuntu-latest
     environment: production
-    needs: setup-release
+    needs: build-release
 
     steps:
     - name: Checkout
