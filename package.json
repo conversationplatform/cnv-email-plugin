@@ -12,7 +12,8 @@
   },
   "files": [
     "package.json",
-    "nodes/"
+    "nodes/",
+    "scripts/"
   ],
   "author": "",
   "devDependencies": {
