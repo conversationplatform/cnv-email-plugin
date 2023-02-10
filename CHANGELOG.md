@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/VisualVest-GmbH/cnv-email-plugin/compare/v3.0.0...v3.0.1) (2023-02-10)
+
+
+### Bug Fixes
+
+* sh path ([a1d26e3](https://github.com/VisualVest-GmbH/cnv-email-plugin/commit/a1d26e30678e01dfcd1b80d0d98bd176bd850077))
+
 ## [3.0.0](https://github.com/VisualVest-GmbH/cnv-email-plugin/compare/v2.0.0...v3.0.0) (2023-02-10)
 
 
