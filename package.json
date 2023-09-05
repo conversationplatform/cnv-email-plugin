@@ -2,7 +2,7 @@
   "name": "@cnv-platform/cnv-email-plugin",
   "version": "3.0.2",
   "description": "OpenSource TinyMe email plugin",
-  "repository": "VisualVest-GmbH/cnv-email-plugin",
+  "repository": "conversationplatform/cnv-email-plugin",
   "scripts": {
     "build": "node build.js",
     "lint": "yarn run eslint nodes/",
